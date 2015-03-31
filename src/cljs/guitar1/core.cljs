@@ -4,7 +4,8 @@
               [secretary.core :as secretary :include-macros true]
               [goog.events :as events]
               [goog.history.EventType :as EventType]
-              [cljsjs.react :as react])
+              [cljsjs.react :as react]
+              [guitar1.neck :as neck])
     (:import goog.History))
 
 ;; -------------------------
@@ -12,11 +13,12 @@
 
 (defn home-page []
   [:div [:h2 "Welcome to guitar1"]
-   [:div [:a {:href "#/about"} "go to about page"]]])
+   [:div [:a {:href "#/neck"} "go to neck page"]]])
 
-(defn about-page []
-  [:div [:h2 "About guitar1"]
-   [:div [:a {:href "#/"} "go to the home page"]]])
+(defn neck-page []
+  [:div [:h2 "Neck guitar1"]
+   [:div [:a {:href "#/"} "go to the home page"]]
+   [:div (neck/string-html :C)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -28,8 +30,8 @@
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))
 
-(secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
+(secretary/defroute "/neck" []
+  (session/put! :current-page #'neck-page))
 
 ;; -------------------------
 ;; History

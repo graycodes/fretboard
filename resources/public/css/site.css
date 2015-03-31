@@ -32,3 +32,13 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.string {
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+}
+.string li {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
