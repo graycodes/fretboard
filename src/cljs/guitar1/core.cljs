@@ -18,7 +18,7 @@
 (defn neck-page []
   [:div [:h2 "Neck guitar1"]
    [:div [:a {:href "#/"} "go to the home page"]]
-   [:div (neck/string-html :C)]])
+   [:div (neck/neck)]])
 
 (defn current-page []
   [:div [(session/get :current-page)]])

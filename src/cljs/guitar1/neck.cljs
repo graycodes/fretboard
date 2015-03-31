@@ -3,21 +3,31 @@
               [goog.events :as events]
               [cljsjs.react :as react]))
 
-(defn index-of [coll v]
+(defn index-of
+  [coll v]
   (let [i (count (take-while #(not= v %) coll))]
     (when (or (< i (count coll)) 
               (= v (last coll)))
       i)))
 
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
+(def strings [:E :A :D :G :B :E])
+(def ionian (:S :S :H :S :S :S :H)); ???
 
-(def neck [:div.neck (map #(vector :p (name %)) chromatic)])
+(defn stri
+  [start-note]
+  (take 24 (cycle
+            (subvec (into [] (take 50 (cycle chromatic)))
+                    (index-of chromatic start-note)))))
 
-(defn stri [start-note] (take 24 (cycle
-                                  (subvec (into [] (take 50 (cycle chromatic)))
-                                          (index-of chromatic start-note)))))
+(defn string-html
+  [start-note]
+  [:ul.string
+   (map #(vector :li (name %)) (stri start-note))])
 
-;(defn htmlify #(vector :p (name %)))
-
-(defn string-html [start-note] [:ul.string (map #(vector :li (name %)) (stri start-note))])
+(defn neck []
+  [:div.neck
+   (conj (map string-html (reverse strings))
+         [:ul.string.frets
+          (map #(vector :li %) (into [] (range 24)))])])
 

@@ -1,6 +1,6 @@
 body {
   font-family: 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding-top: 72px;
   -webkit-font-smoothing: antialiased;
@@ -34,11 +34,21 @@ a:hover {
 }
 
 .string {
-    font-family: "Courier New", monospace;
-    font-size: 14px;
+    /*font-family: "Courier New", monospace;*/
+    font-size: 16px;
 }
 .string li {
     display: inline-block;
-    width: 20px;
     text-align: center;
+    width: 25px;
+    background-color: #ccc;
+    margin: 3px;
+    padding: 3px 0;
+}
+.frets {
+    background-color: #aaa;
+    color: white;
+}
+.frets li {
+    background-color: transparent;
 }
