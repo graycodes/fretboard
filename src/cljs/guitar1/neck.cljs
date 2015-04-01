@@ -12,7 +12,7 @@
 
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
-(def ionian (:S :S :H :S :S :S :H)); ???
+(def ionian '(true false true false true true false true false true false true))
 
 (defn stri
   [start-note]
@@ -27,6 +27,7 @@
 
 (defn neck []
   [:div.neck
+   (println (interleave (stri :C) ionian))
    (conj (map string-html (reverse strings))
          [:ul.string.frets
           (map #(vector :li %) (into [] (range 24)))])])
