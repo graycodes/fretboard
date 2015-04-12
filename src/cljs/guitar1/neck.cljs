@@ -10,44 +10,56 @@
               (= v (last coll)))
       i)))
 
-(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
-(def strings [:E :A :D :G :B :E])
-(def ionian '(true false true false true true false true false true false true))
-(def ionian-c [:C :D :E :F :G :A :B])
-
-(defn stri
-  [start-note]
-  (take 12 (cycle
-            (subvec (into [] (take 50 (cycle chromatic)))
-                    (index-of chromatic start-note)))))
+(defn contains [item coll]
+  (some #{item} coll))
 
 (def pairs (partial partition 2))
 
-(def ionian-c2 (map first (filter #(= true (second %))
-                                  (pairs (interleave (stri :C) ionian)))))
+(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
+(def strings [:E :A :D :G :B :E])
+(def ionian '(true false true false true true false true false true false true))
+(def neck-scale (atom ionian))
+(def neck-key (atom :F#))
+
+(defn set-key
+  [key]
+  (println "rawr")
+  (reset! neck-key key))
+
+(defn neck-string
+  [start-note]
+  (take 24 (cycle
+            (subvec (into [] (take 50 (cycle chromatic)))
+                    (index-of chromatic start-note)))))
+
 (defn scaleify
   [start-note scale]
   (map first (filter #(= true (second %))
-                     (pairs (interleave (stri start-note) scale)))))
+                     (pairs (interleave (neck-string start-note) scale)))))
 
-(def neck-state (atom [1]))
+(defn thinger
+  [note]
+  [(keyword
+    (str "li"
+         ".fret"
+         (if (contains note (scaleify @neck-key @neck-scale)) ".scale-note")
+         (if (= @neck-key note) ".root")))
+   (name note)
+
+;   {:on-click (fn [] set-key :E)}
+   ])
 
 (defn string-html
   [start-note]
   [:ul.string
-   (map #(vector (keyword (str "li" (if (some #{%} (scaleify start-note ionian)) ".scale" ""))) (name %)) (stri start-note))])
-
-(defn set-ionian
-  []
-  (println "hello mum")
-  [:span])
+   (map
+    thinger
+    (neck-string start-note))])
 
 (defn neck []
   [:div.neck
-   (println (str "interleave" (interleave (stri :C) ionian)))
-   (println (str "ionian-c2" (scaleify :D ionian)))
-
-   [:button {:on-click set-ionian} "Set Ionian"]
+   (println (thinger :C))
+;   [:button {:on-click set-ionian} "Set Ionian"]
    (conj (map string-html (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))]
          [:div])])

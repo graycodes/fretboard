@@ -52,6 +52,16 @@ a:hover {
 .frets li {
     background-color: transparent;
 }
-.scale {
-    background-color: #9bc !important;
+.string .scale-note {
+    background-color: #9bc;
+}
+.string .fret {
+    cursor: pointer;
+}
+.string .fret:hover {
+    background-color: white;
+    color: black;
+}
+.string .root {
+    background-color: #bc9
 }
