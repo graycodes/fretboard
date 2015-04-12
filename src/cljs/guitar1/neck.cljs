@@ -13,22 +13,42 @@
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
 (def ionian '(true false true false true true false true false true false true))
+(def ionian-c [:C :D :E :F :G :A :B])
 
 (defn stri
   [start-note]
-  (take 24 (cycle
+  (take 12 (cycle
             (subvec (into [] (take 50 (cycle chromatic)))
                     (index-of chromatic start-note)))))
+
+(def pairs (partial partition 2))
+
+(def ionian-c2 (map first (filter #(= true (second %))
+                                  (pairs (interleave (stri :C) ionian)))))
+(defn scaleify
+  [start-note scale]
+  (map first (filter #(= true (second %))
+                     (pairs (interleave (stri start-note) scale)))))
+
+(def neck-state (atom [1]))
 
 (defn string-html
   [start-note]
   [:ul.string
-   (map #(vector :li (name %)) (stri start-note))])
+   (map #(vector (keyword (str "li" (if (some #{%} (scaleify start-note ionian)) ".scale" ""))) (name %)) (stri start-note))])
+
+(defn set-ionian
+  []
+  (println "hello mum")
+  [:span])
 
 (defn neck []
   [:div.neck
-   (println (interleave (stri :C) ionian))
+   (println (str "interleave" (interleave (stri :C) ionian)))
+   (println (str "ionian-c2" (scaleify :D ionian)))
+
+   [:button {:on-click set-ionian} "Set Ionian"]
    (conj (map string-html (reverse strings))
-         [:ul.string.frets
-          (map #(vector :li %) (into [] (range 24)))])])
+         [:ul.string.frets (map #(vector :li %) (into [] (range 24)))]
+         [:div])])
 

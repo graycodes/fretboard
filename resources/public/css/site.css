@@ -52,3 +52,6 @@ a:hover {
 .frets li {
     background-color: transparent;
 }
+.scale {
+    background-color: #9bc !important;
+}
