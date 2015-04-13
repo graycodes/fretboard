@@ -1,8 +1,16 @@
 (ns guitar1.neck
-    (:require [reagent.core :as r :refer [atom]]
-              [goog.events :as events]
-              [cljsjs.react :as react]))
+  (:require [reagent.core :as r :refer [atom]]
+            [goog.events :as events]
+            [cljsjs.react :as react]))
 
+(def pairs (partial partition 2))
+(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
+(def strings [:E :A :D :G :B :E])
+(def ionian '(true false true false true true false true false true false true))
+(def neck-scale (atom ionian))
+(def neck-key (atom :F#))
+
+;; TODO - Move to core
 (defn index-of
   [coll v]
   (let [i (count (take-while #(not= v %) coll))]
@@ -10,21 +18,10 @@
               (= v (last coll)))
       i)))
 
-(defn contains [item coll]
-  (some #{item} coll))
+;; TODO - Move to core
+(defn contains [item coll] (some #{item} coll))
 
-(def pairs (partial partition 2))
-
-(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
-(def strings [:E :A :D :G :B :E])
-(def ionian '(true false true false true true false true false true false true))
-(def neck-scale (atom ionian))
-(def neck-key (atom :F#))
-
-(defn set-key
-  [key]
-  (println "rawr" key "foo")
-  (reset! neck-key key))
+(defn set-key [key] (reset! neck-key key))
 
 (defn neck-string
   [start-note]
@@ -37,25 +34,25 @@
   (map first (filter #(= true (second %))
                      (pairs (interleave (neck-string start-note) scale)))))
 
-(defn make-fret [note]
+(defn make-fret [key scale note]
   [:li
    {:on-click (fn [event] (set-key (keyword (-> event .-target .-textContent))))
     :class (str "fret "
-                (if (contains note (scaleify @neck-key @neck-scale)) "scale-note ")
-                (if (= @neck-key note) "root"))}
+                (if (contains note (scaleify key scale)) "scale-note ")
+                (if (= key note) "root"))}
    (name note)])
 
-(defn string-html
+(defn build-string
   [start-note]
   [:ul.string
    (map
-    make-fret
+    (partial make-fret @neck-key @neck-scale)
     (neck-string start-note))])
 
-(defn neck []
+(defn render-neck
+  [key]
   [:div.neck
-;   [:button {:on-click set-ionian} "Set Ionian"]
-   (conj (map string-html (reverse strings))
-         [:ul.string.frets (map #(vector :li %) (into [] (range 24)))]
-         [:div])])
+   (conj (map build-string (reverse strings))
+         [:ul.string.frets (map #(vector :li % {:key %}) (into [] (range 24)))])])
 
+(defn neck [] (render-neck @neck-key))
