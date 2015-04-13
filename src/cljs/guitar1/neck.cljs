@@ -23,7 +23,7 @@
 
 (defn set-key
   [key]
-  (println "rawr")
+  (println "rawr" key "foo")
   (reset! neck-key key))
 
 (defn neck-string
@@ -37,28 +37,23 @@
   (map first (filter #(= true (second %))
                      (pairs (interleave (neck-string start-note) scale)))))
 
-(defn thinger
-  [note]
-  [(keyword
-    (str "li"
-         ".fret"
-         (if (contains note (scaleify @neck-key @neck-scale)) ".scale-note")
-         (if (= @neck-key note) ".root")))
-   (name note)
-
-;   {:on-click (fn [] set-key :E)}
-   ])
+(defn make-fret [note]
+  [:li
+   {:on-click (fn [event] (set-key (keyword (-> event .-target .-textContent))))
+    :class (str "fret "
+                (if (contains note (scaleify @neck-key @neck-scale)) "scale-note ")
+                (if (= @neck-key note) "root"))}
+   (name note)])
 
 (defn string-html
   [start-note]
   [:ul.string
    (map
-    thinger
+    make-fret
     (neck-string start-note))])
 
 (defn neck []
   [:div.neck
-   (println (thinger :C))
 ;   [:button {:on-click set-ionian} "Set Ionian"]
    (conj (map string-html (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))]
