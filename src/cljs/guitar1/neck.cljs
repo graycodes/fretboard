@@ -7,6 +7,7 @@
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
 (def ionian '(true false true false true true false true false true false true))
+(def pentatonic-minor '(true false false true false true false true false false true false))
 (def neck-scale (atom ionian))
 (def neck-key (atom :F#))
 
@@ -22,6 +23,8 @@
 (defn contains [item coll] (some #{item} coll))
 
 (defn set-key [key] (reset! neck-key key))
+
+(defn set-scale [scale] (reset! neck-scale scale))
 
 (defn neck-string
   [start-note]
@@ -50,9 +53,11 @@
     (neck-string start-note))])
 
 (defn render-neck
-  [key]
+  [key scale]
   [:div.neck
+   [:button {:on-click #(set-scale ionian)} "Ionian"]
+   [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
    (conj (map build-string (reverse strings))
-         [:ul.string.frets (map #(vector :li % {:key %}) (into [] (range 24)))])])
+         [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
 
-(defn neck [] (render-neck @neck-key))
+(defn neck [] (render-neck @neck-key @neck-scale))
