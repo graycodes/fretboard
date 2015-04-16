@@ -42,7 +42,8 @@
    {:on-click (fn [event] (set-key (keyword (-> event .-target .-textContent))))
     :class (str "fret "
                 (if (contains note (scaleify key scale)) "scale-note ")
-                (if (= key note) "root"))}
+                (if (= key note) "root")
+                (if (= note (nth (scaleify key scale) 3)) "third"))}
    (name note)])
 
 (defn build-string

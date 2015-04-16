@@ -68,3 +68,6 @@ a:hover {
 .string .root {
     background-color: #bc9
 }
+.string .third {
+    border: 2px solid #c9b;
+}
