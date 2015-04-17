@@ -60,6 +60,7 @@ a:hover {
 }
 .string .fret {
     cursor: pointer;
+    border: 2px solid lightgray;
 }
 .string .fret:hover {
     background-color: white;
@@ -69,5 +70,8 @@ a:hover {
     background-color: #bc9
 }
 .string .third {
-    border: 2px solid #c9b;
+    border: 2px solid #698;
+}
+.string .fifth {
+    border: 2px solid #968;
 }
