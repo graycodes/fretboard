@@ -40,10 +40,11 @@ a:hover {
 .string li {
     display: inline-block;
     text-align: center;
-    width: 25px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     background-color: #ccc;
-    margin: 3px;
-    padding: 3px 0;
+    
 }
 .frets {
     background-color: #aaa;
@@ -51,16 +52,18 @@ a:hover {
 }
 .frets li {
     background-color: transparent;
+    padding: 3px;
 }
 .string {
 	margin: 0;
+  padding: 0;
+  border-top: 1px solid gray;
 }
 .string .scale-note {
     background-color: #9bc;
 }
 .string .fret {
     cursor: pointer;
-    border: 2px solid lightgray;
 }
 .string .fret:hover {
     background-color: white;
@@ -68,10 +71,4 @@ a:hover {
 }
 .string .root {
     background-color: #bc9
-}
-.string .third {
-    border: 2px solid #698;
-}
-.string .fifth {
-    border: 2px solid #968;
 }
