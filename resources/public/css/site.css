@@ -46,14 +46,6 @@ a:hover {
     background-color: #ccc;
     
 }
-.frets {
-    background-color: #aaa;
-    color: white;
-}
-.frets li {
-    background-color: transparent;
-    padding: 3px;
-}
 .string {
 	margin: 0;
   padding: 0;
@@ -69,6 +61,18 @@ a:hover {
     background-color: white;
     color: black;
 }
+.string .fret:first-of-type {
+    border-right: 3px solid gray;
+}
 .string .root {
     background-color: #bc9
+}
+
+.frets {
+    background-color: #aaa;
+    color: white;
+}
+.frets li {
+    background-color: transparent;
+    padding: 3px;
 }

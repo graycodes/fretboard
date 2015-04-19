@@ -6,10 +6,14 @@
 (def pairs (partial partition 2))
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
-(def ionian '(true false true false true true false true false true false true))
-(def pentatonic-minor '(true false false true false true false true false false true false))
-(def neck-scale (atom ionian))
-(def neck-key (atom :F#))
+(def ionian 
+  '(true false true false true true false true false true false true))
+(def pentatonic-minor 
+  '(true false false true false true false true false false true false))
+
+;; Set Initial State
+(def neck-scale (atom pentatonic-minor))
+(def neck-key (atom :A))
 
 ;; TODO - Move to core
 (defn index-of
