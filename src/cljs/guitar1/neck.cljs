@@ -43,8 +43,8 @@
     :class (str "fret "
                 (if (contains note (scaleify key scale)) "scale-note ")
                 (if (= key note) "root")
-                (if (= note (nth (scaleify key scale) 3)) "third")
-                (if (= note (nth (scaleify key scale) 5)) "fifth"))}
+                (if (= note (nth (scaleify key scale) (dec 3))) "third")
+                (if (= note (nth (scaleify key scale) (dec 5))) "fifth"))}
    (name note)])
 
 (defn build-string
