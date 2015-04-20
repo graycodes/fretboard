@@ -2,12 +2,19 @@
   (:require [reagent.core :as r :refer [atom]]
             [goog.events :as events]
             [cljsjs.react :as react]))
+;; TODOS: 
+;; Add keys to seqs to make react happy.  http://reagent-project.github.io/
+;; Add all the modes.
+;; Add arpeggios.
+;; See below TODOs too.
 
 (def pairs (partial partition 2))
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
 (def ionian 
   '(true false true false true true false true false true false true))
+(def aeolian
+  '(true false true true false true false true true false true false))
 (def pentatonic-minor 
   '(true false false true false true false true false false true false))
 
@@ -61,8 +68,9 @@
 (defn render-neck
   [key scale]
   [:div.neck
-   [:button {:on-click #(set-scale ionian)} "Ionian"]
    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
+   [:button {:on-click #(set-scale ionian)} "Ionian"]
+   [:button {:on-click #(set-scale aeolian)} "Aeolian"]
    (conj (map build-string (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
 
