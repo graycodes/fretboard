@@ -15,6 +15,8 @@
   '(true false true false true true false true false true false true))
 (def aeolian
   '(true false true true false true false true true false true false))
+(def dorian
+  '(true false true true false true false true false true true false))
 (def pentatonic-minor 
   '(true false false true false true false true false false true false))
 
@@ -71,6 +73,7 @@
    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
    [:button {:on-click #(set-scale ionian)} "Ionian"]
    [:button {:on-click #(set-scale aeolian)} "Aeolian"]
+   [:button {:on-click #(set-scale dorian)} "Dorian"]
    (conj (map build-string (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
 
