@@ -76,14 +76,14 @@
   [key scale]
   [:div.neck
    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
-   [:button {:on-click #(set-scale lydian)} "Lydian"]
-   [:button {:on-click #(set-scale mixolydian)} "Mixolydian"]
-   [:button {:on-click #(set-scale aeolian)} "Aeolian"]
-   [:button {:on-click #(set-scale locrian)} "Locrian"]
-   [:button {:on-click #(set-scale ionian)} "Ionian"]
-   [:button {:on-click #(set-scale dorian)} "Dorian"]
-   [:button {:on-click #(set-scale phrygian)} "Phrygian"]
-   ;;(map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))
+   ;; [:button {:on-click #(set-scale lydian)} "Lydian"]
+   ;; [:button {:on-click #(set-scale mixolydian)} "Mixolydian"]
+   ;; [:button {:on-click #(set-scale aeolian)} "Aeolian"]
+   ;; [:button {:on-click #(set-scale locrian)} "Locrian"]
+   ;; [:button {:on-click #(set-scale ionian)} "Ionian"]
+   ;; [:button {:on-click #(set-scale dorian)} "Dorian"]
+   ;; [:button {:on-click #(set-scale phrygian)} "Phrygian"]
+   (map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))
    (conj (map build-string (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
 
