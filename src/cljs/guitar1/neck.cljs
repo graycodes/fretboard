@@ -8,22 +8,6 @@
 ;; Add arpeggios.
 ;; See below TODOs too.
 
-(def pairs (partial partition 2))
-(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
-(def strings [:E :A :D :G :B :E])
-(def ionian 
-  '(true false true false true true false true false true false true))
-(def aeolian
-  '(true false true true false true false true true false true false))
-(def dorian
-  '(true false true true false true false true false true true false))
-(def pentatonic-minor 
-  '(true false false true false true false true false false true false))
-
-;; Set Initial State
-(def neck-scale (atom pentatonic-minor))
-(def neck-key (atom :A))
-
 ;; TODO - Move to core
 (defn index-of
   [coll v]
@@ -34,6 +18,27 @@
 
 ;; TODO - Move to core
 (defn contains [item coll] (some #{item} coll))
+
+(def pairs (partial partition 2))
+(def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
+(def strings [:E :A :D :G :B :E])
+(def lydian
+  '(true false true false true false true true false true false true))
+(def pentatonic-minor 
+  '(true false false true false true false true false false true false))
+(def mode-names [:Lydian :Mixolydian :Aeolian :Locrian :Ionian :Dorian :Phrygian])
+(defn mode
+  [mode-name]
+  (take 12
+        (subvec (into [] (take 24 (cycle lydian)))
+                ;; This is wrong. Needs to just ignore false ones.
+                (index-of mode-names mode-name))))
+
+(def modes (zipmap mode-names (map mode mode-names)))
+
+;; Set Initial State
+(def neck-scale (atom pentatonic-minor))
+(def neck-key (atom :A))
 
 (defn set-key [key] (reset! neck-key key))
 
@@ -71,9 +76,14 @@
   [key scale]
   [:div.neck
    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
-   [:button {:on-click #(set-scale ionian)} "Ionian"]
+   [:button {:on-click #(set-scale lydian)} "Lydian"]
+   [:button {:on-click #(set-scale mixolydian)} "Mixolydian"]
    [:button {:on-click #(set-scale aeolian)} "Aeolian"]
+   [:button {:on-click #(set-scale locrian)} "Locrian"]
+   [:button {:on-click #(set-scale ionian)} "Ionian"]
    [:button {:on-click #(set-scale dorian)} "Dorian"]
+   [:button {:on-click #(set-scale phrygian)} "Phrygian"]
+   ;;(map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))
    (conj (map build-string (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
 
