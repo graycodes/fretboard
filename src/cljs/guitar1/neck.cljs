@@ -37,6 +37,8 @@
   '(true false true false true true false true false true false true))
 (def pentatonic-minor 
   '(true false false true false true false true false false true false))
+(def pentatonic-major
+  '(true false true false true false false true false true false false))
 (def mode-names [:Ionian :Dorian :Phrygian :Lydian :Mixolydian :Aeolian :Locrian])
 (defn mode
   [mode-name]
@@ -86,6 +88,7 @@
   [key scale]
   [:div.neck
    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
+   [:button {:on-click #(set-scale pentatonic-major)} "Pentatonic Major"]
    (map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))
    (conj (map build-string (reverse strings))
          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
