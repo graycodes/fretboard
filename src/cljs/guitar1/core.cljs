@@ -11,13 +11,8 @@
 ;; -------------------------
 ;; Views
 
-(defn home-page []
-  [:div [:h2 "Welcome to guitar1"]
-   [:div [:a {:href "#/neck"} "go to neck page"]]])
-
 (defn neck-page []
-  [:div [:h2 "Neck guitar1"]
-   [:div [:a {:href "#/"} "go to the home page"]]
+  [:div [:h2 "Fretboard"]
    [:div (neck/neck)]])
 
 (defn current-page []
@@ -28,9 +23,6 @@
 (secretary/set-config! :prefix "#")
 
 (secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
-
-(secretary/defroute "/neck" []
   (session/put! :current-page #'neck-page))
 
 ;; -------------------------

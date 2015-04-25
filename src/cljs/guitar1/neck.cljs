@@ -3,10 +3,12 @@
             [goog.events :as events]
             [cljsjs.react :as react]
             [guitar1.utils :as utils]))
+
 ;; TODOS: 
 ;; Add keys to seqs to make react happy.  http://reagent-project.github.io/
 ;; Add arpeggios.
 
+;; TODO: Figure this out later.
 (defn scale-nth
   [scale n]
   ;; (if (pos? n)
@@ -19,8 +21,6 @@
 (def pairs (partial partition 2))
 (def chromatic [:A :A# :B :C :C# :D :D# :E :F :F# :G :G#])
 (def strings [:E :A :D :G :B :E])
-(def lydian
-  '(true false true false true false true true false true false true))
 (def ionian
   '(true false true false true true false true false true false true))
 (def pentatonic-minor 
@@ -74,11 +74,15 @@
 
 (defn render-neck
   [key scale]
-  [:div.neck
-   [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
-   [:button {:on-click #(set-scale pentatonic-major)} "Pentatonic Major"]
-   (map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))
-   (conj (map build-string (reverse strings))
-         [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])])
+  [:div.fretboard
+   [:p "Click on any of the scales to show the notes on the fretboard."]
+   [:p "You can also click on any of the notes, to change to root note of the scale."]
+   [:div.scales
+    [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
+    [:button {:on-click #(set-scale pentatonic-major)} "Pentatonic Major"]
+    (map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))]
+   [:div.neck
+    (conj (map build-string (reverse strings))
+          [:ul.string.frets (map #(vector :li %) (into [] (range 24)))])]])
 
 (defn neck [] (render-neck @neck-key @neck-scale))
