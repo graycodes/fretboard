@@ -1,23 +1,11 @@
 (ns guitar1.neck
   (:require [reagent.core :as r :refer [atom]]
             [goog.events :as events]
-            [cljsjs.react :as react]))
+            [cljsjs.react :as react]
+            [guitar1.utils :as utils]))
 ;; TODOS: 
 ;; Add keys to seqs to make react happy.  http://reagent-project.github.io/
-;; Add all the modes.
 ;; Add arpeggios.
-;; See below TODOs too.
-
-;; TODO - Move to core
-(defn index-of
-  [coll v]
-  (let [i (count (take-while #(not= v %) coll))]
-    (when (or (< i (count coll)) 
-              (= v (last coll)))
-      i)))
-
-;; TODO - Move to core
-(defn contains [item coll] (some #{item} coll))
 
 (defn scale-nth
   [scale n]
@@ -44,7 +32,7 @@
   [mode-name]
   (take 12
         (subvec (into [] (take 24 (cycle ionian)))
-                (scale-nth ionian (index-of mode-names mode-name)))))
+                (scale-nth ionian (utils/index-of mode-names mode-name)))))
 
 (def modes (zipmap mode-names (map mode mode-names)))
 
@@ -60,7 +48,7 @@
   [start-note]
   (take 24 (cycle
             (subvec (into [] (take 50 (cycle chromatic)))
-                    (index-of chromatic start-note)))))
+                    (utils/index-of chromatic start-note)))))
 
 (defn scaleify
   [start-note scale]
@@ -71,7 +59,7 @@
   [:li
    {:on-click (fn [event] (set-key (keyword (-> event .-target .-textContent))))
     :class (str "fret "
-                (if (contains note (scaleify key scale)) "scale-note ")
+                (if (utils/contains note (scaleify key scale)) "scale-note ")
                 (if (= key note) "root")
                 (if (= note (nth (scaleify key scale) (dec 3))) "third")
                 (if (= note (nth (scaleify key scale) (dec 5))) "fifth"))}
