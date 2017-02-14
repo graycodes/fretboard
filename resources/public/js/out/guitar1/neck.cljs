@@ -79,6 +79,7 @@
    [:p "You can also click on any of the notes, to change to root note of the scale."]
    [:div.scales
     [:button {:on-click #(set-scale pentatonic-minor)} "Pentatonic Minor"]
+    [:hr]
     [:button {:on-click #(set-scale pentatonic-major)} "Pentatonic Major"]
     (map (fn [mode] [:button {:on-click #(set-scale (mode modes))} (name mode)]) (keys modes))]
    [:div.neck
